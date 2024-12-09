@@ -165,9 +165,11 @@ def mutSoma(pedigree_data, prob_aa, prob_cc, prob_tt, prob_gg, prop_het, num_sta
     #---------------------LSE------------------------------------------------------------------------------------------------------
 
     def LSE(param):
+        print(f"Current parameters: {param}")
         predicted_divergence = calculate_divergence(pedigree_data, prob_aa, prob_cc, prob_tt, prob_gg, param)
         intercept_lse = param[1]
         lse_value = np.sum((pedigree_data[:, 3] - intercept_lse - predicted_divergence) ** 2)
+        print(f"LSE value: {lse_value}")
         return lse_value
 
     #-----------------NELDER-MEAD-------------------------------------------------------------------------------------------------------------
@@ -178,7 +180,7 @@ def mutSoma(pedigree_data, prob_aa, prob_cc, prob_tt, prob_gg, prop_het, num_sta
     optimization_method = "Nelder-Mead"
 
     for start in range(num_starts):
-        mutation_rate_random_start = 10 ** np.random.uniform(np.log10(1e-11), np.log10(1e-3))
+        mutation_rate_random_start = 10 ** np.random.uniform(np.log10(1e-6), np.log10(1e-3))
         intercept_random_start = np.random.uniform(0, np.max(pedigree_data[:, 3]))
         initial_parameters = [mutation_rate_random_start, intercept_random_start]
 
